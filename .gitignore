@@ -1,0 +1,55 @@
+# ---- 本地配置（含数据库口令与 JWT 密钥，绝不入库）----
+# ⚠️ application.yml 里是真实的连接串与 sa-token 的 jwt-secret-key。
+#    那个密钥进了仓库就等于公开 —— 拿到它的人可以伪造任意用户的 token（包括管理员），
+#    所以真配置一律忽略，新环境照 application-example.yml 填一份即可。
+# ⚠️ application-example.yml 是**要入库**的模板，别把它也忽略了。
+src/main/resources/application.yml
+src/main/resources/application-local.yml
+src/main/resources/application-prod.yml
+# 万一将来改成通配写法（application-*.yml），务必保留下面这条例外 ——
+# 否则模板文件会被一起忽略，新人 clone 下来根本看不到要照着填什么。
+!src/main/resources/application-example.yml
+
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# https://maven.apache.org/tools/wrapper/#Usage_with_or_without_Binary_JAR
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse m2e generated files
+# Eclipse Core
+.project
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# ---- 工具缓存目录 ----
+# 冒烟脚本使用的浏览器 profile 运行目录（Edge --user-data-dir）。
+# 原先只忽略了 .admin_prof/，结果 tools/ 下堆过 18 个目录、共 1.66 GB，
+# 其中一个 155 MB 的文件直接导致 git push 被 GitHub 拒绝。
+# 现在所有冒烟共用固定的 tools/.smoke_prof，并由 tools/browser_profile.js
+# 在每次运行前清扫历史残留。
+tools/.smoke_prof/
+tools/.search_prof/
+tools/.admin_prof/
+tools/.e2e_prof/
+tools/.wb_prof/
+tools/.v3f_prof*/
+tools/.probe*/
+tools/.diagtop_prof*/
+
+# 冒烟失败现场截图（做演示/答辩材料时有用，但不必入库）
+tools/.shots/
+
+# ---- 运行时用户上传目录 ----
+# 图片与乐谱附件都由应用在运行时写入，库里（score_file 表）已有记录，
+# 入库只会制造无意义的噪音与冲突。
+# 两个子目录由 FileService.store() 在首次上传时自动创建，故无需占位文件；
+# 目录用途说明见 uploads/README.md。
+uploads/img/
+uploads/score/

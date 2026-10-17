@@ -1,0 +1,67 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: kalimba-workshop
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/your_db
+    username: username
+    password: password
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      # password:
+      database: 0
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    banner: false
+
+# ------------ Sa-Token ------------
+sa-token:
+  token-name: sa-token
+  timeout: 2592000          # 30 天（前端做刷新）
+  active-timeout: -1
+  is-concurrent: true
+  is-share: false
+  token-style: uuid
+  is-log: false
+  jwt-secret-key: ${KAL_JWT_SECRET}    # 用 openssl rand -base64 48 生成，别手写
+
+# ------------ 业务自定义 ------------
+kalimba:
+  upload:
+    dir: ./uploads
+  cors:
+    allowed-origins: http://localhost:5174,http://127.0.0.1:5174
+  audit:
+    # 发帖审核模式：auto = 发布即过审（status=1）；pre = 先审后发（status=0，管理端审核后放行）
+    post-mode: auto
+  search:
+    # 是否把搜索词写入 search_log（热搜榜数据源）。false 则热搜恒空，前端回退显示热门标签
+    log-keywords: true
+    # 热搜榜默认统计窗口（天）
+    hot-days: 7
+
+# ------------ 接口文档 ------------
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    com.kalimba.workshop: info
