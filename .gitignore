@@ -53,3 +53,6 @@ tools/.shots/
 # 目录用途说明见 uploads/README.md。
 uploads/img/
 uploads/score/
+
+hs_err_pid*.log
+replay_pid*.log
